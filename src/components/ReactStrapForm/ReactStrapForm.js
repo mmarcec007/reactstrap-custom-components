@@ -4,15 +4,43 @@ import {checkValidity} from "../../shared/util";
 import { Form, Button } from "reactstrap";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import {addEventListenerToElement} from "./Util/util";
-import {mayasForm} from "../../constants/Forms/MayasForm";
 
 class ReactStrapForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             formConfig: this.props.formConfig,
+            formFields: this.formFields(props),
+            formButtons: this.formButtons(props),
             formIsValid: false
+        };
+    };
+
+    formButtons = (props) => {
+        const buttons = [];
+        for (let key in props.formConfig.formButtons) {
+            buttons.push({
+                id: key,
+                config: props.formConfig.formButtons[key]
+            });
         }
+        return buttons;
+    };
+
+    formFields = (props) => {
+        // setup form fields from provided config on instantiation
+        const formElementsArray = [];
+        for (let key in props.formConfig.formFields) {
+            props.formConfig.formFields[key].valid = false;
+            props.formConfig.formFields[key].touched = false;
+            props.formConfig.formFields[key].id = key;
+            props.formConfig.formFields[key].name = key;
+            formElementsArray.push({
+                id: key,
+                config: props.formConfig.formFields[key]
+            });
+        }
+        return formElementsArray;
     };
 
     handleSubmit = (event) => {
@@ -32,7 +60,9 @@ class ReactStrapForm extends Component {
             newPost[key] = formValuesArray[val].value;
         }
 
-        this.props.getFromSubmit(newPost);
+        if (this.props.getDataFromSubmit) {
+            this.props.getDataFromSubmit(newPost);
+        }
     };
 
     handleCancel = () => {
@@ -73,32 +103,15 @@ class ReactStrapForm extends Component {
 
     componentDidMount() {
         // bind event listeners to form buttons
-        addEventListenerToElement(mayasForm.formName, 'submit', (event) => this.handleSubmit(event));
-        addEventListenerToElement(mayasForm.formButtons.cancel.id,
+        addEventListenerToElement(this.state.formConfig.formName, 'submit', (event) => this.handleSubmit(event));
+        addEventListenerToElement(this.state.formConfig.formButtons.cancel.id,
             'click', () => this.handleCancel());
-    }
+    };
 
     render() {
-        // form elements
-        const formElementsArray = [];
-        for (let key in this.state.formConfig.formFields) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.formConfig.formFields[key]
-            });
-        }
-        // form buttons formButtons
-        const buttons = [];
-        for (let key in this.state.formConfig.formButtons) {
-            buttons.push({
-                id: key,
-                config: this.state.formConfig.formButtons[key]
-            });
-        }
-
         return (
             <Form id={this.state.formConfig.formName}>
-                {formElementsArray.map(formElement => (
+                {this.state.formFields.map(formElement => (
                     <ReactStrapElement
                         key={formElement.id}
                         type={formElement.config.type}
@@ -115,7 +128,7 @@ class ReactStrapForm extends Component {
                     />
                 ))}
                 <ButtonGroup>
-                    {buttons.map(formButton => (
+                    {this.state.formButtons.map(formButton => (
                         <Button disabled={!this.state.formIsValid && !formButton.config.active ? 'disabled' : ''}
                                 color={formButton.config.color}
                                 type={formButton.config.type}
