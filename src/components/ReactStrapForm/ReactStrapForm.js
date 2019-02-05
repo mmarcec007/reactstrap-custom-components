@@ -46,18 +46,11 @@ class ReactStrapForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const formValuesArray = [];
-        for (let key in this.state.formConfig.formFields) {
-            formValuesArray.push({
-                id: key,
-                value: this.state.formConfig.formFields[key].value
-            });
-        }
-
+        const formValuesArray = this.state.formFields;
         const newPost = {};
         for (let val in formValuesArray) {
             let key = formValuesArray[val].id;
-            newPost[key] = formValuesArray[val].value;
+            newPost[key] = formValuesArray[val].config.value;
         }
 
         if (this.props.getDataFromSubmit) {
