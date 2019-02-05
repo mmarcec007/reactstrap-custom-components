@@ -3,7 +3,6 @@ import ReactStrapForm from './components/ReactStrapForm/ReactStrapForm';
 import './App.css';
 import {mayasForm} from './constants/Forms/MayasForm';
 import "bootstrap/dist/css/bootstrap.css";
-import {addEventListenerToElement, extractFormFieldValues, eraseFormFieldValues,} from "./components/ReactStrapForm/Util/util";
 
 class App extends Component {
 
@@ -12,7 +11,7 @@ class App extends Component {
   }
 
   // mandatory implementation if you want to see your new data
-  getFromSubmit = (data) => {
+  getDataFromSubmit = (data) => {
     console.log(data);
   };
 
@@ -20,7 +19,7 @@ class App extends Component {
     return (
       <div className="App">
           <ReactStrapForm formConfig={mayasForm}
-                          getFromSubmit={(data) => this.getFromSubmit(data)}/>
+                          getDataFromSubmit={(data) => this.getDataFromSubmit(data)}/>
       </div>
     );
   }
