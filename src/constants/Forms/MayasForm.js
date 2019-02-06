@@ -70,6 +70,16 @@ export const mayasForm = {
                 minLength: 1,
                 maxLength: 5
             }
+        },
+        deliveryMethod: {
+            field: 'input',
+            type: "select",
+            options: [
+                {value: 'fastest', displayValue: 'Fastest'},
+                {value: 'cheapest', displayValue: 'Cheapest'}
+            ],
+            value: 'fastest',
+            validation: {}
         }
     },
     formButtons: {

@@ -118,6 +118,7 @@ class ReactStrapForm extends Component {
                         validationMessage={formElement.config.validationMessage}
                         value={formElement.config.value}
                         formText={formElement.config.formText}
+                        options={formElement.config.options}
                     />
                 ))}
                 <ButtonGroup>
