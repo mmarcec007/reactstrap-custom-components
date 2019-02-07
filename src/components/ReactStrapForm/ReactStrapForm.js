@@ -123,7 +123,8 @@ class ReactStrapForm extends Component {
                 ))}
                 <ButtonGroup>
                     {this.state.formButtons.map(formButton => (
-                        <Button disabled={!this.state.formIsValid && !formButton.config.active ? 'disabled' : ''}
+                        <Button disabled={!this.state.formIsValid && !formButton.config.active}
+                                key={formButton.config.id}
                                 color={formButton.config.color}
                                 type={formButton.config.type}
                                 id={formButton.config.id}>

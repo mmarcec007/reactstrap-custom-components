@@ -3,14 +3,15 @@ import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap";
 
 const reactStrapElement = props => {
 
-    var valid = '';
-    if (props.invalid && props.shouldValidate && props.touched) {
+    let valid = '';
+    if (props.invalid && props.touched) {
         valid = 'invalid';
     }
 
     let input = <Input
-        invalid={valid}
+        invalid={props.invalid && props.touched}
         type={props.type}
+        key={props.id}
         name={props.name}
         id={props.id}
         value={props.value}
@@ -20,8 +21,9 @@ const reactStrapElement = props => {
 
     if (props.type === 'select') {
         input = <Input
-                    invalid={valid}
+                    invalid={props.invalid && props.touched}
                     type={props.type}
+                    key={props.id}
                     name={props.name}
                     id={props.id}
                     value={props.value}
